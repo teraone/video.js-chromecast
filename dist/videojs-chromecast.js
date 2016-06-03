@@ -52,6 +52,12 @@ var ChromeCastButton = (function (_Button) {
         this.hide();
         this.initializeApi();
         player.chromecast = this;
+        player.on('sourcechange', function () {
+            if (player.chromecast.casting) {
+                player.tech_.apiMedia = null;
+                player.chromecast.onSessionSuccess(player.chromecast.apiSession);
+            }
+        });
     }
 
     /**
@@ -159,6 +165,9 @@ var ChromeCastButton = (function (_Button) {
             this.apiSession = session;
             var source = this.player_.cache_.src;
             var type = this.player_.currentType();
+
+            this.oldSrc = source;
+            this.oldType = type;
 
             _videoJs2['default'].log('Session initialized: ' + session.sessionId + ' source : ' + source + ' type : ' + type);
 
@@ -276,7 +285,9 @@ var ChromeCastButton = (function (_Button) {
             this.casting = false;
             var time = this.player_.currentTime();
             this.removeClass('connected');
-            this.player_.src(this.player_.options_['sources']);
+            var currSrc = this.oldSrc;
+            var currType = this.oldType;
+            this.player_.src([{ src: currSrc, type: currType }]);
             if (!this.player_.paused()) {
                 this.player_.one('seeked', function () {
                     return this.player_.play();

@@ -22,6 +22,12 @@ class ChromeCastButton extends Button {
         this.hide();
         this.initializeApi();
         player.chromecast = this;
+        player.on('sourcechange', function() {
+          if (player.chromecast.casting) {
+            player.tech_.apiMedia = null;
+            player.chromecast.onSessionSuccess(player.chromecast.apiSession);   
+          }
+        });
     }
 
     /**
@@ -122,6 +128,9 @@ class ChromeCastButton extends Button {
         this.apiSession = session;
         const source = this.player_.cache_.src;
         const type = this.player_.currentType();
+
+        this.oldSrc = source;
+        this.oldType = type;
 
         videojs.log('Session initialized: ' + session.sessionId + ' source : ' + source + ' type : ' + type);
 
@@ -236,7 +245,9 @@ class ChromeCastButton extends Button {
         this.casting = false;
         let time = this.player_.currentTime();
         this.removeClass('connected');
-        this.player_.src(this.player_.options_['sources']);
+        let currSrc = this.oldSrc;
+        let currType = this.oldType;
+        this.player_.src([{src:currSrc, type:currType}]);
         if (!this.player_.paused()) {
             this.player_.one('seeked', function () {
                 return this.player_.play();
