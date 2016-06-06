@@ -140,7 +140,7 @@ var Chromecast = (function (_Tech) {
                     this.trigger('waiting');
                     break;
                 case chrome.cast.media.PlayerState.IDLE:
-                    this.trigger('timeupdate');
+                    // this.trigger('timeupdate');
                     break;
                 case chrome.cast.media.PlayerState.PAUSED:
                     this.trigger('pause');
