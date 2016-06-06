@@ -22,11 +22,28 @@ class ChromeCastButton extends Button {
         this.hide();
         this.initializeApi();
         player.chromecast = this;
+        let currItem = player.currentItem();
+        let currTime;
+
+        player.on('presourcechange', function () {
+            currTime = player.currentTime();
+        });
+
         player.on('sourcechange', function() {
           if (player.chromecast.casting) {
-            player.tech_.apiMedia = null;
-            player.chromecast.onSessionSuccess(player.chromecast.apiSession);   
-          }
+                player.tech_.apiMedia = null;
+
+                if (currItem == player.currentItem())
+                {
+                    player.chromecast.onSessionSuccess(player.chromecast.apiSession, currTime);
+                }
+                else
+                {
+                    player.chromecast.onSessionSuccess(player.chromecast.apiSession);
+                }
+
+                currItem = player.currentItem();
+            }
         });
     }
 
@@ -116,7 +133,7 @@ class ChromeCastButton extends Button {
         }
     }
 
-    onSessionSuccess (session) {
+    onSessionSuccess (session, currTime = null) {
         let image;
         let key;
         let loadRequest;
@@ -207,7 +224,7 @@ class ChromeCastButton extends Button {
         loadRequest = new chrome.cast.media.LoadRequest(mediaInfo);
 
         loadRequest.autoplay = true;
-        loadRequest.currentTime = this.player_.currentTime();
+        loadRequest.currentTime = currTime || this.player_.currentTime();
 
         this.apiSession.loadMedia(loadRequest, ::this.onMediaDiscovered, ::this.castError);
         this.apiSession.addUpdateListener(::this.onSessionUpdate);
