@@ -243,6 +243,7 @@ class ChromeCastButton extends Button {
         this.player_.userActive(true);
         this.addClass('connected');
         this.removeClass('error');
+        this.player_.addClass('vjs-chromecast-casting');
     }
 
     onSessionUpdate (isAlive) {
@@ -262,6 +263,7 @@ class ChromeCastButton extends Button {
         this.casting = false;
         let time = this.player_.currentTime();
         this.removeClass('connected');
+        this.player_.removeClass('vjs-chromecast-casting');
         let currSrc = this.oldSrc;
         let currType = this.oldType;
         this.player_.src([{src:currSrc, type:currType}]);
