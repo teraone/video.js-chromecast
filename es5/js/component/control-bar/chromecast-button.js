@@ -270,6 +270,7 @@ var ChromeCastButton = (function (_Button) {
             this.player_.options_.inactivityTimeout = 0;
             this.player_.userActive(true);
             this.addClass('connected');
+            this.player_.addClass('vjs-chromecast-casting');
             this.removeClass('error');
         }
     }, {
@@ -293,6 +294,7 @@ var ChromeCastButton = (function (_Button) {
             this.casting = false;
             var time = this.player_.currentTime();
             this.removeClass('connected');
+            this.player_.removeClass('vjs-chromecast-casting');
             var currSrc = this.oldSrc;
             var currType = this.oldType;
             this.player_.src([{ src: currSrc, type: currType }]);
