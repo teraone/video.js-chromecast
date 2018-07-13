@@ -24,7 +24,9 @@ var plugin = function plugin(options) {
   (0, _videojsChromecast2['default'])(this, options);
 };
 
-_videoJs2['default'].plugin('chromecast', plugin);
+var registerPlugin = _videoJs2['default'].registerPlugin || _videoJs2['default'].plugin;
+
+registerPlugin('chromecast', plugin);
 
 exports['default'] = plugin;
 module.exports = exports['default'];

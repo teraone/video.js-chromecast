@@ -11,6 +11,8 @@ const plugin = function (options) {
   chromecast(this, options);
 };
 
-videojs.plugin('chromecast', plugin);
+var registerPlugin = videojs.registerPlugin || videojs.plugin;
+
+registerPlugin('chromecast', plugin);
 
 export default plugin;

@@ -270,8 +270,8 @@ var ChromeCastButton = (function (_Button) {
             this.player_.options_.inactivityTimeout = 0;
             this.player_.userActive(true);
             this.addClass('connected');
-            this.player_.addClass('vjs-chromecast-casting');
             this.removeClass('error');
+            this.player_.addClass('vjs-chromecast-casting');
         }
     }, {
         key: 'onSessionUpdate',
