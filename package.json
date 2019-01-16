@@ -59,7 +59,7 @@
     "es5/",
     "index.html",
     "scripts/",
-    "src/js/",
+    "src/",
     "test/"
   ],
   "babel": {
