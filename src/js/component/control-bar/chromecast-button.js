@@ -22,7 +22,11 @@ class ChromeCastButton extends Button {
         this.hide();
         this.initializeApi();
         player.chromecast = this;
-        let currItem = player.currentItem();
+        if (player.hasOwnProperty('currentItem')) {
+            var currItem = player.currentItem();
+        } else {
+            var currItem = undefined;
+        }
         let currTime;
 
         player.on('presourcechange', function () {
