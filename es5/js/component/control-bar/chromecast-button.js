@@ -44,7 +44,11 @@ var ChromeCastButton = (function (_Button) {
         this.hide();
         this.initializeApi();
         player.chromecast = this;
-        var currItem = player.currentItem();
+        if (player.hasOwnProperty('currentItem')) {
+            var currItem = player.currentItem();
+        } else {
+            var currItem = undefined;
+        }
         var currTime = undefined;
 
         player.on('presourcechange', function () {
